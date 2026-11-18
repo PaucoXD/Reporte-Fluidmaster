@@ -40,7 +40,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 var(-
 button { font: inherit; }
 
 .wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-@media (min-width: 1200px) { .wrap { padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px)); } }
+@media (min-width: 1440px) { .wrap { padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px)); } }
 
 .band { background: var(--brand); color: var(--brand-ink); }
 .band .wrap { display: flex; align-items: center; gap: 18px; padding-block: 18px; flex-wrap: wrap; }
@@ -85,7 +85,7 @@ input:focus-visible, select:focus-visible, button:focus-visible, tr:focus-visibl
 /* ---- tabla a todo el ancho ---- */
 .tablebox { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
 table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13px; }
-th, td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
 thead th { position: sticky; top: 0; z-index: 2; background: var(--surface); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); line-height: 1.25; box-shadow: inset 0 -2px 0 var(--line); }
 thead th:first-child { border-top-left-radius: 10px; } thead th:last-child { border-top-right-radius: 10px; }
 thead th.grp { color: var(--link); }
@@ -94,7 +94,8 @@ tbody tr:hover td { background: var(--row-hover); }
 body.edit tbody tr { cursor: pointer; }
 .c-guia { min-width: 0; }
 .guia { font-family: var(--font-data); font-weight: 500; font-size: 12.5px; white-space: nowrap; }
-.prov { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 22vw; }
+.prov { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 15vw; }
+th:first-child, td:first-child { padding-left: 12px; } th:last-child, td:last-child { padding-right: 12px; }
 .doc { font-family: var(--font-data); font-size: 12px; white-space: nowrap; }
 .doc + .doc { color: var(--muted); }
 td.d { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-size: 12.5px; white-space: nowrap; }
@@ -112,7 +113,7 @@ td.d { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-s
 .pill.wip + .track i.on { background: var(--amber); }
 
 /* ---- pantallas angostas: tarjetas ---- */
-@media (max-width: 1080px) {
+@media (max-width: 1220px) {
   .tablebox { background: none; border: 0; }
   table, tbody { display: block; }
   thead { display: none; }
@@ -121,10 +122,12 @@ td.d { font-family: var(--font-data); font-variant-numeric: tabular-nums; font-s
   tbody tr:hover td { background: none; }
   td { border: 0; padding: 5px 8px; }
   .c-guia { grid-column: span 2; }
-  .c-est { justify-self: end; }
+  .c-est { grid-column: 3; grid-row: 1; justify-self: end; }
+  .c-guia { grid-row: 1; grid-column: 1 / span 2; }
+  td.d { white-space: normal; min-width: 0; }
   .c-doc { grid-column: 1 / -1; display: flex; gap: 14px; flex-wrap: wrap; padding-bottom: 8px; border-bottom: 1px solid var(--line); margin-bottom: 2px; }
   .prov { max-width: none; white-space: normal; }
-  td.d::before { content: attr(data-l); display: block; font-family: var(--font-body); font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  td.d::before { content: attr(data-l); display: block; font-family: var(--font-body); font-size: 10px; line-height: 1.25; overflow-wrap: anywhere; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
 }
 
 .more { justify-self: center; font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--link); cursor: pointer; }
@@ -209,9 +212,9 @@ dialog.small { width: min(380px, calc(100vw - 24px)); }
   <div class="tablebox">
     <table>
       <thead><tr>
-        <th>Guía / proveedor</th><th>Factura / pedimento</th><th>Estado</th>
-        <th class="grp">Arribo</th><th class="grp">Manifiesto</th><th class="grp">Solicitud a previo</th><th class="grp">Previo</th>
-        <th class="grp">Recibo de factura</th><th class="grp">Envío de proforma</th><th class="grp">VoBo</th><th class="grp">Despacho</th><th class="grp">Entrega</th>
+        <th>Guía /<br>proveedor</th><th>Factura /<br>pedimento</th><th>Estado</th>
+        <th class="grp">Arribo</th><th class="grp">Manifiesto</th><th class="grp">Solicitud<br>a previo</th><th class="grp">Previo</th>
+        <th class="grp">Recibo de<br>factura</th><th class="grp">Envío de<br>proforma</th><th class="grp">VoBo</th><th class="grp">Despacho</th><th class="grp">Entrega</th>
       </tr></thead>
       <tbody id="tb"></tbody>
     </table>
