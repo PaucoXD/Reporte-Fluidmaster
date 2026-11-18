@@ -308,9 +308,14 @@ onValue(ref(db, BASE), (snap) => {
     for (const [k] of FIELDS) if (ISO.test(g[k] || '')) { year = g[k].slice(0, 4); break; }
     const flags = (g.sinDocs ? 1 : 0) + (g.manifiestoFH ? 1 : 0) + (g.solicitudND ? 1 : 0) + (g.voboFH ? 1 : 0);
     if (g.act > last) last = g.act;
-    return { id, g, stage, year, flags, done: has(g.entrega),
+    // Orden: por fecha de arribo (o la primera fecha que tenga). Sin fechas: las capturadas en la página van arriba
+    // ("Por arribar"); las viejas del Excel sin fechas, al final.
+    let key = '';
+    for (const [k] of FIELDS) if (ISO.test(g[k] || '')) { key = g[k]; break; }
+    if (!key) key = (g.orden || 0) > 1e12 ? '9999-99-99' : '0000-00-00';
+    return { id, g, stage, year, flags, done: has(g.entrega), key,
       text: [g.guia, g.proveedor, g.factura, g.pedimento, (g.pedimento || '').replace(/\s/g, '')].join(' ').toLowerCase() };
-  }).sort((a, b) => (b.g.orden || 0) - (a.g.orden || 0));
+  }).sort((a, b) => (a.key < b.key ? 1 : a.key > b.key ? -1 : (b.g.orden || 0) - (a.g.orden || 0)));
   const d = last ? new Date(last) : null;
   $('sub').textContent = 'Seguimiento de guías de importación' + (d ? ' · Actualizado ' + d.toLocaleDateString('es-MX') + ' ' + d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }) : '');
   $('avisoImport').hidden = !(editor && items.length === 0);
@@ -380,7 +385,7 @@ function render() {
   $('empty').hidden = list.length > 0 || items.length === 0;
   $('more').hidden = list.length <= state.shown;
   $('more').textContent = 'Mostrar más (' + (list.length - Math.min(list.length, state.shown)) + ' restantes)';
-  $('count').textContent = list.length.toLocaleString('es-MX') + (list.length === 1 ? ' guía' : ' guías') + ' · más recientes primero' + (editor ? ' · toca una guía para editarla' : '');
+  $('count').textContent = list.length.toLocaleString('es-MX') + (list.length === 1 ? ' guía' : ' guías') + ' · por fecha de arribo, más recientes primero' + (editor ? ' · toca una guía para editarla' : '');
 }
 
 function setSeg(v) { state.st = v; document.querySelectorAll('#seg button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === v))); }
